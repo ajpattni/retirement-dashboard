@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Retirement Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand-block">
+          <p class="eyebrow">UK retirement planner</p>
+          <h1>Retire<span>.</span></h1>
+        </div>
+        <div class="header-controls">
+          <div class="segmented" aria-label="Mode">
+            <button id="simpleMode" type="button">Simple</button>
+            <button id="advancedMode" type="button">Advanced</button>
+          </div>
+          <div class="segmented compact" aria-label="Income view">
+            <button id="monthlyView" type="button">Monthly</button>
+            <button id="annualView" type="button">Annual</button>
+          </div>
+          <label class="switch">
+            <input id="realTerms" type="checkbox" checked />
+            <span id="realTermsLabel">Today's money</span>
+          </label>
+        </div>
+      </header>
+
+      <section class="landing" aria-labelledby="landingTitle">
+        <div class="landing-copy">
+          <p class="eyebrow">Retirement clarity without the spreadsheet fog</p>
+          <h2 id="landingTitle">Plan your future income before it plans you.</h2>
+          <p class="landing-lede">
+            Model pension pots, savings, State Pension and living standards in one sharp view,
+            then see the monthly moves that change your retirement trajectory.
+          </p>
+          <div class="landing-actions" aria-label="Landing actions">
+            <button id="openPlanner" class="primary-action" type="button">Start planning</button>
+            <button id="openStandards" class="secondary-action" type="button">View standards</button>
+          </div>
+          <div class="landing-metrics" aria-label="Key app capabilities">
+            <div>
+              <span class="metric-label">Forecast view</span>
+              <strong>Monthly</strong>
+            </div>
+            <div>
+              <span class="metric-label">Inputs</span>
+              <strong>Simple + Advanced</strong>
+            </div>
+            <div>
+              <span class="metric-label">Terms</span>
+              <strong>Today or future</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-stage" aria-label="Retirement dashboard preview">
+          <div class="preview-shell">
+            <div class="preview-header">
+              <span>Projected income</span>
+              <strong>Tracking</strong>
+            </div>
+            <div class="preview-income">&pound;2,830<span>/month</span></div>
+            <div class="preview-chart" aria-hidden="true">
+              <span style="height: 32%"></span>
+              <span style="height: 46%"></span>
+              <span style="height: 58%"></span>
+              <span style="height: 72%"></span>
+              <span style="height: 88%"></span>
+            </div>
+            <div class="preview-grid">
+              <div>
+                <span class="metric-label">Pot at retirement</span>
+                <strong>&pound;742k</strong>
+              </div>
+              <div>
+                <span class="metric-label">Contribution gap</span>
+                <strong>&pound;186</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <main id="planner" class="dashboard">
+        <aside class="panel inputs-panel">
+          <section class="section">
+            <div class="section-title">
+              <h2>Core Details</h2>
+              <span id="retirementDateLabel"></span>
+            </div>
+            <label class="field">
+              <span>Date of birth</span>
+              <input id="dob" type="date" />
+            </label>
+            <label class="field">
+              <span>Target retirement age <strong id="retirementAgeValue"></strong></span>
+              <input id="retirementAge" type="range" min="55" max="75" />
+            </label>
+            <div class="mini-grid">
+              <div>
+                <span class="metric-label">Years to retirement</span>
+                <strong id="yearsToRetirement">0</strong>
+              </div>
+              <div>
+                <span class="metric-label">State Pension age</span>
+                <strong>67</strong>
+              </div>
+            </div>
+          </section>
+
+          <section id="simpleInputs" class="section">
+            <div class="section-title">
+              <h2>Simple Inputs</h2>
+            </div>
+            <label class="field">
+              <span>Current annual salary</span>
+              <input id="salary" type="number" min="0" step="500" />
+            </label>
+            <label class="field">
+              <span>Employee pension contribution <strong id="employeeContributionValue"></strong></span>
+              <input id="employeeContribution" type="range" min="1" max="20" step="0.5" />
+            </label>
+            <label class="field">
+              <span>Employer pension contribution <strong id="employerContributionValue"></strong></span>
+              <input id="employerContribution" type="range" min="0" max="15" step="0.5" />
+            </label>
+            <label class="field">
+              <span>Assumed annual growth <strong id="simpleGrowthValue"></strong></span>
+              <input id="simpleGrowth" type="range" min="1" max="10" step="0.25" />
+            </label>
+            <label class="field">
+              <span>Existing pension pot</span>
+              <input id="existingPot" type="number" min="0" step="500" />
+            </label>
+          </section>
+
+          <section id="advancedInputs" class="section hidden">
+            <div class="section-title">
+              <h2>Pension Pots & Savings</h2>
+              <button id="showAssetChooser" class="icon-button" type="button" title="Add asset">+</button>
+            </div>
+            <div id="assetChooser" class="asset-chooser hidden" aria-label="Choose asset type">
+              <button id="addPensionPot" type="button">Pension pot</button>
+              <button id="addSaving" type="button">Saving</button>
+            </div>
+            <div id="pensionPots" class="asset-list"></div>
+            <div id="extraSavings" class="asset-list"></div>
+            <div class="asset-card">
+              <h3>ISA Savings</h3>
+              <label class="field small"><span>Current value</span><input id="isaValue" type="number" min="0" step="500" /></label>
+              <label class="field small"><span>Monthly contribution</span><input id="isaMonthly" type="number" min="0" step="25" /></label>
+              <label class="field small"><span>Growth rate</span><input id="isaGrowth" type="number" min="0" max="15" step="0.25" /></label>
+            </div>
+            <div class="asset-card">
+              <h3>Cash Savings</h3>
+              <label class="field small"><span>Current value</span><input id="cashValue" type="number" min="0" step="500" /></label>
+              <label class="field small"><span>Monthly contribution</span><input id="cashMonthly" type="number" min="0" step="25" /></label>
+              <label class="field small"><span>Interest rate</span><input id="cashInterest" type="number" min="0" max="10" step="0.25" /></label>
+            </div>
+            <div class="asset-card">
+              <h3>Other Investments</h3>
+              <label class="field small"><span>Lump sum</span><input id="otherValue" type="number" min="0" step="500" /></label>
+              <label class="field small"><span>Growth rate</span><input id="otherGrowth" type="number" min="0" max="15" step="0.25" /></label>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-title">
+              <h2>State Pension</h2>
+            </div>
+            <div class="state-options">
+              <label><input type="radio" name="statePensionMode" value="forecast" checked /> API forecast</label>
+              <label><input type="radio" name="statePensionMode" value="ni" /> NI years</label>
+              <label><input type="radio" name="statePensionMode" value="manual" /> Manual</label>
+            </div>
+            <a class="gov-link" href="https://www.gov.uk/check-state-pension" target="_blank" rel="noreferrer">Check your State Pension forecast on GOV.UK</a>
+            <label id="forecastInputWrap" class="field">
+              <span>Forecast weekly amount</span>
+              <input id="stateForecastWeekly" type="number" min="0" step="1" />
+            </label>
+            <label id="niInputWrap" class="field hidden">
+              <span>Qualifying NI years</span>
+              <input id="niYears" type="number" min="0" max="35" step="1" />
+            </label>
+            <label id="manualInputWrap" class="field hidden">
+              <span>Manual weekly amount</span>
+              <input id="stateManualWeekly" type="number" min="0" step="1" />
+            </label>
+            <p class="note">Full State Pension reference: &pound;221.20/week.</p>
+            <p id="stateWarning" class="warning hidden">State Pension is excluded because your selected retirement age is below 67.</p>
+          </section>
+
+          <section class="section">
+            <details>
+              <summary>Assumptions</summary>
+              <div class="assumptions">
+                <label class="field small"><span>Drawdown rate</span><input id="drawdownRate" type="number" min="1" max="8" step="0.25" /></label>
+                <label class="field small"><span>Inflation rate</span><input id="inflationRate" type="number" min="0" max="8" step="0.25" /></label>
+                <p>Growth is compounded monthly. Retirement income uses an illustrative drawdown rule plus State Pension where eligible.</p>
+                <p class="disclaimer">Projections are illustrative only and are not financial advice.</p>
+              </div>
+            </details>
+          </section>
+        </aside>
+
+        <section class="main-column">
+          <section class="hero">
+            <div>
+              <p class="eyebrow">Projected retirement income</p>
+              <div class="hero-number" id="heroIncome">&pound;0/month</div>
+              <p id="annualIncomeLabel" class="hero-sub">&pound;0 per year</p>
+            </div>
+            <div id="statusPill" class="status-pill">Below minimum</div>
+          </section>
+
+          <section class="panel overview-panel">
+            <div class="section-title">
+              <h2>Pension and Savings Overview</h2>
+              <span id="overviewTermsLabel">Today's money</span>
+            </div>
+            <div class="overview-table" id="assetOverview"></div>
+          </section>
+
+          <section class="gap-strip">
+            <div>
+              <span class="metric-label">Monthly gap to next standard</span>
+              <strong id="monthlyGap">&pound;0</strong>
+            </div>
+            <div>
+              <span class="metric-label">What if</span>
+              <strong id="whatIfPrompt">Increase contributions to improve your projection.</strong>
+            </div>
+          </section>
+
+          <section class="panel chart-panel">
+            <div class="section-title">
+              <h2>Projection</h2>
+              <span id="potAtRetirement">&pound;0 total pot</span>
+            </div>
+            <div id="projectionChart" class="chart"></div>
+          </section>
+
+          <section class="lower-grid">
+            <div class="panel">
+              <div class="section-title">
+                <h2>Living Standards</h2>
+              </div>
+              <div id="benchmarks" class="benchmarks"></div>
+            </div>
+            <div class="panel">
+              <div class="section-title">
+                <h2>Income Sources</h2>
+              </div>
+              <div class="donut-wrap">
+                <div id="donutChart" class="donut"></div>
+                <div id="donutLegend" class="legend"></div>
+              </div>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
